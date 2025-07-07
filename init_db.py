@@ -49,6 +49,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS evaluacion (
 
 
 # Insertar usuarios
+credenciales = []
 for nombre, apellido, rol in usuarios:
     usuario = f"{nombre.lower()}.{apellido.lower()}"
     contrasena = generar_contrasena()
@@ -56,9 +57,19 @@ for nombre, apellido, rol in usuarios:
     try:
         c.execute("INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol) VALUES (?, ?, ?, ?, ?)",
                   (nombre, apellido, usuario, hash_pw, rol))
+        credenciales.append((usuario, nombre, apellido, rol, contrasena))
         print(f"Usuario: {usuario} | Contraseña: {contrasena} | Rol: {rol}")
     except sqlite3.IntegrityError:
         print(f"Usuario {usuario} ya existe.")
+
+# Guardar credenciales en archivo
+with open("USUARIOS_INICIALES.md", "w", encoding="utf-8") as f:
+    f.write("# Usuarios iniciales y contraseñas\n\n")
+    f.write("| Usuario         | Nombre   | Apellido   | Rol    | Contraseña           |\n")
+    f.write("|----------------|----------|------------|--------|----------------------|\n")
+    for usuario, nombre, apellido, rol, contrasena in credenciales:
+        f.write(f"| {usuario:<14} | {nombre:<8} | {apellido:<10} | {rol:<6} | {contrasena:<20} |\n")
+    f.write("\n> Este archivo se genera automáticamente al crear los usuarios iniciales.\n")
 
 conn.commit()
 conn.close()

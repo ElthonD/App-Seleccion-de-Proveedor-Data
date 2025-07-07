@@ -1,0 +1,19 @@
+# Entorno virtual de Python
+.venv/
+
+# Archivo de usuarios iniciales con contraseñas
+USUARIOS_INICIALES.md
+
+# Archivos de base de datos
+*.db
+
+database.db
+
+# Archivos temporales y de caché
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de configuración de VSCode
+.vscode/
