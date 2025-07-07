@@ -38,6 +38,26 @@ def login():
 # Mostrar login siempre primero y redirigir según el rol
 def logout_button():
     with st.sidebar:
+        # Quitar logo de Streamlit
+        st.markdown("""
+            <style>
+            [data-testid="stSidebarNav"] {display: none;}
+            .css-6qob1r {display: none !important;}
+            .st-emotion-cache-1v0mbdj.e115fcil1 {display: none !important;}
+            </style>
+        """, unsafe_allow_html=True)
+        usuario = st.session_state.get("usuario", "")
+        if usuario:
+            # Obtener nombre y apellido desde la base de datos
+            conn = sqlite3.connect(DB)
+            c = conn.cursor()
+            c.execute("SELECT nombre, apellido FROM usuarios WHERE usuario = ?", (usuario,))
+            row = c.fetchone()
+            conn.close()
+            if row:
+                nombre, apellido = row
+                st.markdown(f"**Usuario:** {nombre} {apellido}")
+        st.write("")
         if st.button("Cerrar sesión", key="logout_btn"):
             st.session_state.clear()
             st.rerun()
