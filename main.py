@@ -29,7 +29,7 @@ def login():
                     st.session_state["usuario"] = usuario
                     st.session_state["rol"] = rol
                     st.success("Inicio de sesión exitoso. Redirigiendo...")
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error("Contraseña incorrecta.")
             else:
@@ -40,7 +40,7 @@ def logout_button():
     with st.sidebar:
         if st.button("Cerrar sesión", key="logout_btn"):
             st.session_state.clear()
-            st.experimental_rerun()
+            st.rerun()
 
 if "usuario" not in st.session_state or "rol" not in st.session_state:
     login()
