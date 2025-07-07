@@ -4,11 +4,8 @@ import pandas as pd
 
 
 def createPage():
-
     DB = "database.db"
-
     PROVEEDORES = ["KEYRUS", "EON", "MULTIPLICA", "SCANDA"]
-
     BLOQUES = [
         ("Capacidades Técnicas y Funcionales", [
             "Compatibilidad tecnológica con tu stack actual (bases de datos, lenguajes, herramientas ETL, BI, etc.)",
@@ -113,4 +110,9 @@ def createPage():
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
 
-        return True
+    # Obtener usuario de la sesión
+    usuario = st.session_state.get("usuario", None)
+    if usuario:
+        cuestionario(usuario)
+    else:
+        st.warning("Debes iniciar sesión para acceder a la evaluación.")
