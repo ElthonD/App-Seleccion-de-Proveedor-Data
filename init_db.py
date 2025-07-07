@@ -54,13 +54,17 @@ for nombre, apellido, rol in usuarios:
     usuario = f"{nombre.lower()}.{apellido.lower()}"
     contrasena = generar_contrasena()
     hash_pw = bcrypt.hashpw(contrasena.encode(), bcrypt.gensalt()).decode()
-    try:
+    # Actualizar o insertar usuario y contraseña siempre
+    c.execute("SELECT id FROM usuarios WHERE usuario = ?", (usuario,))
+    existe = c.fetchone()
+    if existe:
+        c.execute("UPDATE usuarios SET contraseña = ?, nombre = ?, apellido = ?, rol = ? WHERE usuario = ?",
+                  (hash_pw, nombre, apellido, rol, usuario))
+    else:
         c.execute("INSERT INTO usuarios (nombre, apellido, usuario, contraseña, rol) VALUES (?, ?, ?, ?, ?)",
                   (nombre, apellido, usuario, hash_pw, rol))
-        credenciales.append((usuario, nombre, apellido, rol, contrasena))
-        print(f"Usuario: {usuario} | Contraseña: {contrasena} | Rol: {rol}")
-    except sqlite3.IntegrityError:
-        print(f"Usuario {usuario} ya existe.")
+    credenciales.append((usuario, nombre, apellido, rol, contrasena))
+    print(f"Usuario: {usuario} | Contraseña: {contrasena} | Rol: {rol}")
 
 # Guardar credenciales en archivo
 with open("USUARIOS_INICIALES.md", "w", encoding="utf-8") as f:
