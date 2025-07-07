@@ -33,11 +33,11 @@ def login():
         else:
             st.error("Usuario no encontrado.")
 
-# Redirección según sesión
-if "usuario" in st.session_state:
+# Mostrar login siempre primero
+if "usuario" not in st.session_state:
+    login()
+else:
     if st.session_state.get("rol") == "admin":
         admin.run()
     else:
         app.run()
-else:
-    login()
