@@ -1,12 +1,30 @@
 /* Logo */
 /* Adapted from Zachary Blackwood */
 [data-testid="stSidebar"] {
-                background-image: url(https://streamlit.io/images/brand/streamlit-logo-secondary-colormark-darktext.png);
-                background-size: 200px;
-                background-repeat: no-repeat;
-                background-position: 4px 20px;
-            }
+    background-image: url("img/GIM Desarrollos Logo.png");
+    background-size: 180px 60px;
+    background-repeat: no-repeat;
+    background-position: 50% 30px;
+    min-height: 200px;
+}
 
+/* Espacio para el saludo y botón debajo del logo */
+.stSidebarUserBlock {
+    margin-top: 110px;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #222;
+}
+
+.stSidebarUserBlock .user-name {
+    margin-bottom: 0.5em;
+    display: block;
+}
+
+.stSidebarUserBlock .logout-btn {
+    margin-top: 0.5em;
+}
 
 /* Card */
 /* Adapted from https://startbootstrap.com/theme/sb-admin-2 */
@@ -15,10 +33,8 @@ div.css-1r6slb0.e1tzin5v2 {
     border: 1px solid #CCCCCC;
     padding: 5% 5% 5% 10%;
     border-radius: 5px;
-    
     border-left: 0.5rem solid #9AD8E1 !important;
     box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
-    
 }
 
 label.css-mkogse.e16fv1kl2 {
@@ -27,12 +43,10 @@ label.css-mkogse.e16fv1kl2 {
     text-transform: uppercase !important;
 }
 
-
 /* Move block container higher */
 div.block-container.css-18e3th9.egzxvld2 {
   margin-top: -5em;
 }
-
 
 /* Hide hamburger menu and footer */
 div.css-r698ls.e8zbici2 {

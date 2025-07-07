@@ -83,9 +83,35 @@ def createPage():
         conn.close()
         return df
 
+    def proveedores_pendientes(usuario):
+        conn = sqlite3.connect(DB)
+        c = conn.cursor()
+        c.execute("SELECT DISTINCT proveedor FROM evaluacion WHERE usuario = ?", (usuario,))
+        evaluados = set(row[0] for row in c.fetchall())
+        conn.close()
+        return [p for p in PROVEEDORES if p not in evaluados]
+
     def cuestionario(usuario):
         st.title("Evaluación de Proveedores")
-        proveedor = st.selectbox("Selecciona el proveedor a evaluar", PROVEEDORES)
+        pendientes = proveedores_pendientes(usuario)
+        if not pendientes:
+            # Obtener nombre y apellido
+            conn = sqlite3.connect(DB)
+            c = conn.cursor()
+            c.execute("SELECT nombre, apellido FROM usuarios WHERE usuario = ?", (usuario,))
+            row = c.fetchone()
+            conn.close()
+            nombre, apellido = row if row else (usuario, "")
+            st.success(f"Hola, {nombre} {apellido}, ya evaluaste a todos los proveedores.\n\nMuchas gracias por tu participación, ya puedes cerrar sesión.")
+            df = descargar_excel(usuario)
+            st.download_button(
+                label="Descargar todas tus respuestas en Excel",
+                data=df.to_excel(index=False, engine='openpyxl'),
+                file_name=f"respuestas_{usuario}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+            return
+        proveedor = st.selectbox("Selecciona el proveedor a evaluar", pendientes, key="proveedor_select")
         respuestas = {}
         for bloque, preguntas in BLOQUES:
             st.header(bloque)
@@ -99,16 +125,10 @@ def createPage():
                 )
                 punt_cuant = next(o[0] for o in OPCIONES if o[1] == opcion)
                 respuestas[bloque][pregunta] = (punt_cuant, opcion)
-        if st.button("Enviar respuestas"):
+        if st.button("Enviar respuestas", key=f"enviar_{proveedor}"):
             guardar_respuestas(usuario, proveedor, respuestas)
-            st.success("Respuestas guardadas correctamente.")
-            df = descargar_excel(usuario)
-            st.download_button(
-                label="Descargar respuestas en Excel",
-                data=df.to_excel(index=False, engine='openpyxl'),
-                file_name=f"respuestas_{usuario}.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
+            st.success(f"Respuestas para {proveedor} guardadas correctamente.")
+            st.rerun()
 
     # Obtener usuario de la sesión
     usuario = st.session_state.get("usuario", None)
