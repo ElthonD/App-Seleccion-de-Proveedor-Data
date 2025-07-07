@@ -2,6 +2,7 @@ import streamlit as st
 import sqlite3
 import bcrypt
 
+
 import app
 import admin
 
@@ -43,9 +44,9 @@ def logout_button():
 
 if "usuario" not in st.session_state or "rol" not in st.session_state:
     login()
+elif st.session_state.get("rol") == "admin":
+    logout_button()
+    admin.run()
 else:
     logout_button()
-    if st.session_state.get("rol") == "admin":
-        admin.run()
-    else:
-        app.run()
+    app.show_menu()
