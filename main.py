@@ -48,11 +48,17 @@ def logout_button():
             conn.close()
             if row:
                 nombre, apellido = row
-        st.markdown(f"""
+        st.markdown(
+            f"""
+            <div style='text-align:center;margin-bottom:10px;'>
+                <img src='app/img/GIM Desarrollos Logo.png' width='160' style='margin-bottom:20px;margin-top:10px;' />
+            </div>
             <div class='stSidebarUserBlock'>
                 <span class='user-name'>Hola, {nombre} {apellido}</span>
             </div>
-        """, unsafe_allow_html=True)
+            """,
+            unsafe_allow_html=True
+        )
         if st.button("Cerrar sesión", key="logout_btn"):
             st.session_state.clear()
             st.rerun()

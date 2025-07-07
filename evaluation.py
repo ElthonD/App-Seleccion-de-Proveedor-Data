@@ -120,8 +120,15 @@ def createPage():
                 respuestas[bloque][pregunta] = (punt_cuant, opcion)
         if st.button("Enviar respuestas", key=f"enviar_{proveedor}"):
             guardar_respuestas(usuario, proveedor, respuestas)
-            st.success(f"Respuestas para {proveedor} guardadas correctamente.")
+            st.session_state["modal_proveedor"] = proveedor
             st.rerun()
+
+        # Mostrar modal si corresponde
+        if st.session_state.get("modal_proveedor"):
+            proveedor_modal = st.session_state["modal_proveedor"]
+            st.info(f"Evaluación de Proveedor '{proveedor_modal}' culminada, continuar con el siguiente proveedor del listado.")
+            # Limpiar modal al siguiente render
+            del st.session_state["modal_proveedor"]
 
     # Obtener usuario de la sesión
     usuario = st.session_state.get("usuario", None)
