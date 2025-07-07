@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-from streamlit_book import page
 import PyPDF2
 
 # Definir los títulos de las páginas según los bloques del PDF
@@ -36,7 +35,8 @@ def extraer_bloques_pdf(pdf_path, titulos):
 def createPage():
     st.title("Informe de Criterios de Valor - Proveedores")
     bloques = extraer_bloques_pdf(PDF_PATH, TITULOS)
-    for titulo in TITULOS:
-        with page(titulo):
+    tab_objs = st.tabs(TITULOS)
+    for i, titulo in enumerate(TITULOS):
+        with tab_objs[i]:
             st.header(titulo)
             st.write(bloques[titulo] if bloques[titulo] else "Contenido no disponible.")
