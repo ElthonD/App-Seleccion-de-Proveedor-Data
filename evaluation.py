@@ -103,6 +103,20 @@ def createPage():
             conn.close()
             nombre, apellido = row if row else (usuario, "")
             st.success(f"Hola, {nombre} {apellido}, ya evaluaste a todos tus proveedores, muchas gracias por tu colaboración.")
+            # Descargar Excel con todos los resultados del usuario
+            df_resultados = descargar_excel(usuario)
+            if not df_resultados.empty:
+                import io
+                output = io.BytesIO()
+                with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                    df_resultados.to_excel(writer, index=False)
+                output.seek(0)
+                st.download_button(
+                    label="Descargar resultados en Excel",
+                    data=output,
+                    file_name=f"resultados_evaluacion_{usuario}.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
             return
         proveedor = st.selectbox("Selecciona el proveedor a evaluar", pendientes, key="proveedor_select")
         respuestas = {}

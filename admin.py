@@ -37,6 +37,35 @@ def graficos_votaciones():
     if df.empty:
         st.info("Aún no hay evaluaciones registradas.")
         return
+    # Tabla resumen de puntuación total por proveedor y bloque con ponderación
+    st.markdown("### Resumen de Puntuación por Proveedor y Criterio (con ponderación)")
+    criterios = [
+        ("Capacidades técnicas", 20),
+        ("Costos y modelo económico", 20),
+        ("Soporte y equipo de trabajo", 15),
+        ("Gobierno y cumplimiento", 15),
+        ("Experiencia y casos de éxito", 15),
+        ("Innovación y capacidades de IA/ML", 10),
+        ("Metodología y acompañamiento", 5)
+    ]
+    # Normalizar nombres de bloque en la base de datos si es necesario
+    # Se asume que el campo 'bloque' en la tabla evaluacion corresponde a los criterios
+    resumen = []
+    proveedores = df['proveedor'].unique()
+    for criterio, peso in criterios:
+        fila = {"Criterio": criterio, "Peso (%)": peso}
+        for proveedor in proveedores:
+            df_filtrado = df[(df['bloque'] == criterio) & (df['proveedor'] == proveedor)]
+            if not df_filtrado.empty:
+                # Promedio de puntuación cuantitativa para ese proveedor y criterio
+                punt = df_filtrado['puntuacion_cuantitativa'].mean()
+                fila[proveedor] = f"{punt:.0f}%"
+            else:
+                fila[proveedor] = "-"
+        resumen.append(fila)
+    df_resumen = pd.DataFrame(resumen)
+    st.dataframe(df_resumen, use_container_width=True, hide_index=True)
+
     # Histograma general
     st.markdown("### Histograma General")
     fig_total = px.histogram(df, x="puntuacion_cuantitativa", color="proveedor", barmode="group",
