@@ -61,7 +61,7 @@ if "usuario" not in st.session_state or "rol" not in st.session_state:
     login()
 elif st.session_state.get("rol") == "admin":
     logout_button()
-    admin.run()
+    admin.createPage()
 else:
     logout_button()
     app.show_menu()
