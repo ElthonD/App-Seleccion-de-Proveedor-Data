@@ -102,14 +102,7 @@ def createPage():
             row = c.fetchone()
             conn.close()
             nombre, apellido = row if row else (usuario, "")
-            st.success(f"Hola, {nombre} {apellido}, ya evaluaste a todos los proveedores.\n\nMuchas gracias por tu participación, ya puedes cerrar sesión.")
-            df = descargar_excel(usuario)
-            st.download_button(
-                label="Descargar todas tus respuestas en Excel",
-                data=df.to_excel(index=False, engine='openpyxl'),
-                file_name=f"respuestas_{usuario}.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
+            st.success(f"Hola, {nombre} {apellido}, ya evaluaste a todos tus proveedores, muchas gracias por tu colaboración.")
             return
         proveedor = st.selectbox("Selecciona el proveedor a evaluar", pendientes, key="proveedor_select")
         respuestas = {}

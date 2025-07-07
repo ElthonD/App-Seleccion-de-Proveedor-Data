@@ -54,10 +54,32 @@ def graficos_votaciones():
                            title=f"Puntuaciones en {bloque}")
         st.plotly_chart(fig, use_container_width=True)
 
+def reset_cuestionario():
+    st.subheader("Reiniciar intento de cuestionario para usuario")
+    conn = sqlite3.connect(DB)
+    c = conn.cursor()
+    c.execute("SELECT usuario, nombre, apellido FROM usuarios WHERE rol = 'user'")
+    usuarios = c.fetchall()
+    conn.close()
+    if usuarios:
+        user_dict = {f"{u[1]} {u[2]} ({u[0]})": u[0] for u in usuarios}
+        selected = st.selectbox("Selecciona el usuario a reiniciar", list(user_dict.keys()))
+        if st.button("Reiniciar cuestionario", key="reset_cuestionario"):
+            conn = sqlite3.connect(DB)
+            c = conn.cursor()
+            c.execute("DELETE FROM evaluacion WHERE usuario = ?", (user_dict[selected],))
+            conn.commit()
+            conn.close()
+            st.success(f"Se ha reiniciado el intento de cuestionario para {selected}.")
+    else:
+        st.info("No hay usuarios tipo 'user' registrados.")
+
 def createPage():
     st.title("Panel de Administración")
-    tab1, tab2 = st.tabs(["Registrar Usuario", "Gráficos de Evaluaciones"])
+    tab1, tab2, tab3 = st.tabs(["Registrar Usuario", "Gráficos de Evaluaciones", "Reiniciar Cuestionario"])
     with tab1:
         registrar_usuario()
     with tab2:
         graficos_votaciones()
+    with tab3:
+        reset_cuestionario()
