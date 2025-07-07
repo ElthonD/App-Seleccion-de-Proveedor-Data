@@ -35,9 +35,17 @@ def login():
                 st.error("Usuario no encontrado.")
 
 # Mostrar login siempre primero y redirigir según el rol
+def logout_button():
+    with st.sidebar:
+        if st.button("Cerrar sesión", key="logout_btn"):
+            st.session_state.clear()
+            st.experimental_rerun()
+
 if "usuario" not in st.session_state or "rol" not in st.session_state:
     login()
-elif st.session_state.get("rol") == "admin":
-    admin.run()
 else:
-    app.run()
+    logout_button()
+    if st.session_state.get("rol") == "admin":
+        admin.run()
+    else:
+        app.run()
