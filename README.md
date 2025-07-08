@@ -70,9 +70,37 @@ streamlit run main.py
 - Usuario de pruebas: `prueba.test`
 - Usuario administrador: `admin.app`
 
-## Personalización
-- Puedes modificar los bloques, criterios y proveedores en `evaluacion.py`.
-- El informe PDF debe estar en la ruta `~/Documents/Informe Criterios de Valor - Proveedores.pdf`.
+
+## Instrucciones para el llenado de las evaluaciones de proveedores
+
+1. **Acceso y autenticación:**
+   - Inicia sesión con tu usuario y contraseña proporcionados por el administrador.
+   - Si eres usuario tipo `user`, accederás al cuestionario de evaluación. Si eres `admin`, tendrás acceso al panel de administración.
+
+2. **Evaluación de proveedores:**
+   - Selecciona el proveedor a evaluar en el menú desplegable. Solo aparecerán los proveedores que aún no has evaluado.
+   - Para cada proveedor, deberás responder una serie de bloques (criterios) y preguntas específicas.
+   - Los bloques y criterios principales son:
+     - Capacidades Técnicas y Funcionales
+     - Fortaleza y cobertura del proveedor cloud (GCP / AWS)
+     - Costo Total de Propiedad (TCO)
+     - Gobierno de Datos y Cumplimiento
+     - Capacidad de Soporte, Transferencia de Conocimiento y Acompañamiento
+     - Reputación, experiencia y casos de éxito
+     - Capacidades en analítica, IA y ML (valor añadido)
+     - Propuesta Técnica y de Valor
+   - Cada pregunta se responde seleccionando una opción de cumplimiento, de 1 (No cumple) a 5 (Cumple totalmente o excede expectativas).
+   - Puedes avanzar bloque por bloque y proveedor por proveedor. Si cierras sesión, tu progreso se guarda y podrás continuar desde donde quedaste.
+
+3. **Finalización y descarga de resultados:**
+   - Cuando hayas evaluado a todos los proveedores, verás un mensaje de agradecimiento y un botón para descargar en Excel todas tus respuestas.
+   - El archivo Excel contendrá todas tus respuestas cuantitativas y cualitativas por proveedor, bloque y pregunta.
+
+4. **Notas adicionales:**
+   - Si necesitas reiniciar tu evaluación, contacta a un administrador para que borre tus respuestas desde el panel de administración.
+   - Puedes modificar los bloques, criterios y proveedores editando el archivo `evaluacion.py`.
+   - El informe PDF de criterios debe estar en la ruta `pdf_content/Informe Criterios de Valor - Proveedores.pdf`.
+
 
 ## Créditos
 Desarrollado por el equipo de Arquitectura y Gobierno de Datos.
