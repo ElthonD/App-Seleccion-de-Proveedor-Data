@@ -30,7 +30,7 @@ def registrar_usuario():
             st.error("El usuario ya existe.")
 
 def graficos_votaciones():
-    st.subheader("Histograma de votaciones por bloque y total")
+    #st.subheader("Histograma de votaciones por bloque y total")
     conn = sqlite3.connect(DB)
     df = pd.read_sql_query("SELECT * FROM evaluacion", conn)
     conn.close()
