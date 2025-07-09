@@ -66,10 +66,20 @@ def graficos_votaciones():
                 matriz[p].append(round(resultado_pond, 2))
             else:
                 matriz[p].append(None)
+    # Calcular cuántos usuarios han respondido al test para cada proveedor
+    usuarios_test = df['usuario'].nunique()  # o por proveedor si es necesario
+
+    totales = []
+    for p in proveedores:
+        total = sum([v for v in matriz[p] if v is not None])
+        promedio_total = total / usuarios_test if usuarios_test else 0
+        totales.append(round(promedio_total, 2))
+    """ 
     totales = []
     for p in proveedores:
         total = sum([v for v in matriz[p] if v is not None])
         totales.append(round(total, 2))
+    """
     def color_text(val):
         if val is None:
             return 'black'
